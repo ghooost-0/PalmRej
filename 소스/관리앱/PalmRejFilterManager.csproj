@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PlatformTarget>x64</PlatformTarget>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>PalmRejFilterManager.ico</ApplicationIcon>
+    <AssemblyName>PalmRejFilterManager</AssemblyName>
+    <RootNamespace>PalmRejFilterManager</RootNamespace>
+    <Version>0.1.11</Version>
+    <FileVersion>0.1.11.0</FileVersion>
+    <AssemblyVersion>0.1.11.0</AssemblyVersion>
+    <Product>PalmRej 관리</Product>
+    <Description>PalmRej 상태 확인과 드라이버 ON/OFF</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="PalmRejFilterManager.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+</Project>
