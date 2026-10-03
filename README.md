@@ -1,5 +1,7 @@
 # PalmRej
 
+**English:** An unofficial palm-rejection driver for the Wacom Cintiq Pro 24 (DTH-2420) on Windows, not affiliated with Wacom. See the [English section](#english) below. The installer and app are in Korean only.
+
 Wacom Cintiq Pro 24 (DTH-2420)용 손날 인식 드라이버 **(비공식)**
 
 손날(손바닥 옆면)이 화면에 닿아 생기는 터치 오작동을 최대한 막습니다. 100% 막는 것은 사실상 불가능하고, 만든 사람이 실제로 쓰면서 본 바로는 99% 정도를 막습니다.
@@ -120,3 +122,107 @@ Cintiq Pro 24 가 아닌 와콤 기종에서는 설치할 때 "확인되지 않�
 Visual Studio / WDK 템플릿이 만든 파일 몇 개처럼 MIT 가 적용되지 않는 부분은 [빌드 안내](소스/빌드_안내.md) 의 "MIT 가 적용되지 않는 부분" 에 적었습니다.
 
 Wacom, Cintiq 은 Wacom Co., Ltd. 의 상표입니다.
+
+## English
+
+PalmRej is an **unofficial** palm-rejection driver for the Wacom Cintiq Pro 24 with touch (DTH-2420) on Windows. It was made by an individual and is **not affiliated with Wacom**.
+
+**The installer, the manager app and all other documents are in Korean only.** This section covers the main points, and the table under "Install" gives the English meaning of the Korean labels you will see. Message boxes show Korean text, but their Yes / No / OK / Cancel buttons are in your Windows display language.
+
+### What it does
+
+- It blocks as many accidental touches from the side of your hand (the "hand edge") as possible.
+- It looks at how each touch registers (contact size, number of contacts and so on) and blocks only the hand edge.
+- One- and two-finger taps and drags still work, even right after the hand edge touches down.
+- Blocking 100% is practically impossible. In the maker's own use, it blocks about 99% of these touches.
+- There are no settings. The behavior is fixed.
+
+### Before you start
+
+- The maker is not a developer and does not know how to code. PalmRej was built mostly with GPT and Claude. There may be a number of problems the maker is not aware of.
+- Only the maker has tested it, on their own device (Cintiq Pro 24, Windows 10).
+- It is tailored to the maker's own way of working. For example, all touches with three or more fingers are blocked, partly because they cannot be told apart from a palm and partly because the maker does not use them.
+- So the maker does not really know how it will behave for other people.
+
+### Known behavior
+
+- **Three or more fingers are blocked.** A hand edge or palm usually registers as three or more contacts, and three fingers cannot be reliably told apart from a palm (especially for taps and press-and-hold). So on the Cintiq Pro 24, PalmRej treats any touch sent to Windows with three or more contacts at once as a palm and blocks it. As a result, gestures with three or more fingers in apps (which receive touch through Windows) do not work. One- and two-finger touches and gestures work as usual.
+- **Wacom Center touch gestures work as before.** Touch gestures set in Wacom Center (two-finger scroll, zoom, rotate and so on) are handled by Wacom's own software. PalmRej does not change that path, so these gestures behave exactly as they did before you installed it. This also means PalmRej does not filter the hand edge for them. If gestures with three or more fingers are turned on in Wacom Center, resting your hand on the screen can trigger them, so it is best to turn them off.
+- **Use a bare hand or a thin glove.** With a thick glove made of several layers of cloth, the hand edge can register as a small or broken-up contact and look like a finger, so it may be blocked less often.
+
+### Requirements and risks
+
+- **Tablet:** Cintiq Pro 24 with touch (DTH-2420). On other Wacom models, the installer shows an "unverified model" warning (확인되지 않은 기종). If you continue, it compares your tablet's structure with the Cintiq Pro 24's. If they match, it installs only the hand-edge filter, without the extra part that keeps one- and two-finger taps and drags working right after the hand edge touches down. If they do not match, it changes nothing. If touch or the pen acts oddly after installing on another model, press PalmRej 끄기 (Turn PalmRej off) in the manager app and reboot.
+- **Windows:** tested only on Windows 10 (64-bit, 22H2) with Wacom driver 6.4.14. Not tested on Windows 11. On Windows 11, Smart App Control (if it is on) may block the unsigned installer.
+- **Wacom driver:** the Wacom driver (Wacom Center) must be installed first, and the tablet must be on and connected.
+- **Test mode:** Windows normally runs only drivers with a Microsoft-approved signature. That signature is expensive, so this driver can only run with a test signature. Installing PalmRej turns on Windows test mode, and the words "Test Mode" appear in the bottom-right corner of the desktop. Other test-signed drivers can then run too, which lowers your PC's security. The installer also adds the driver's own signing certificate (for code signing only) to your PC's trusted certificates, so that the drivers install without warning prompts.
+- **Secure Boot must be off** (in your BIOS/UEFI settings). If it is on, the installer tells you and changes nothing. If a BIOS update or reset turns it back on, touch stops working (the pen and mouse still work). Turn Secure Boot off again, or press PalmRej 끄기 (Turn PalmRej off) and reboot. Programs that require Secure Boot cannot be used with PalmRej.
+- **Anti-cheat and similar programs:** some programs refuse to run, or report a problem, while test mode is on. Anti-cheat such as Vanguard is the typical case (the game will not start). Before using such a program, open the manager app (PalmRej 관리 on your desktop), press PalmRej 끄기 (Turn PalmRej off), reboot, and check that the "Test Mode" text is gone. If it is still there, do not use that program; follow what the manager app shows (the table under "Install" translates its messages). To use PalmRej again, press PalmRej 켜기 (Turn PalmRej on) and reboot. Vanguard sometimes needs one more reboot: if the game still does not start, reboot again. (Of the programs the maker tried, only Vanguard needed this.)
+- **BitLocker:** the installer pauses BitLocker protection for one reboot only, so that turning on test mode does not trigger a BitLocker recovery-key prompt. Protection resumes automatically.
+- **As is:** PalmRej is provided as is, with no warranty. The maker is not responsible for problems caused by using it, such as data loss, device failure or game account sanctions.
+
+### Download
+
+Download the latest `PalmRej_x.y.z.zip` from [Releases](https://github.com/ghooost-0/PalmRej/releases/latest). For extra safety, check that the zip's SHA-256 hash matches the one on the release page. In PowerShell: `Get-FileHash -Algorithm SHA256 <path to the zip>`.
+
+### Install
+
+1. Extract the zip. Do not run anything from inside the zip.
+2. Turn the tablet on and connect it.
+3. Run `PalmRej 설치.exe` (PalmRej Setup). If "Windows protected your PC" appears, click **More info**, then **Run anyway**. This warning appears because the installer is an unsigned file made by an individual. Do this only for the installer from a zip you downloaded from the Releases page above, ideally after checking its SHA-256.
+4. When Windows asks "Do you want to allow this app to make changes to your device?", click **Yes**.
+5. Click **설치** (Install). When it finishes, save any open work, click **지금 재부팅** (Reboot now), and confirm with **OK**.
+
+**Always reboot after installing, uninstalling, or turning PalmRej on or off.** Until you do, touch or the pen may not work properly. If touch does not work after the reboot, turn the tablet off and on once (this occasionally happens on the first boot after installing).
+
+Keep the zip; you need it to reinstall. To upgrade from an older version, do not uninstall it. Close the manager app if it is open, run the new installer, and reboot once. If you pressed PalmRej 끄기 (Turn PalmRej off) and have not rebooted since, reboot first. The full guide (in Korean) is `읽어보세요.txt` ("Read me") in the zip.
+
+| Korean label | Meaning |
+|---|---|
+| 설치 / 취소 | Install / Cancel |
+| 지금 재부팅 / 나중에 / 닫기 | Reboot now / Later / Close |
+| 기록 파일 열기 | Open log file (the install log) |
+| 확인되지 않은 기종 | Unverified model (warning on tablets other than the Cintiq Pro 24) |
+| 계속할까요? | Continue? (Yes / No) |
+| PalmRej 관리 | PalmRej Manager (the manager app, on your desktop and in the Start menu; it asks for administrator permission when it opens) |
+| 드라이버 / 테스트 모드 / 타블렛 | Driver / Test mode / Tablet (status rows in the manager app) |
+| PalmRej 켜짐 / 정상 동작 중입니다 | PalmRej is on / Working normally (green = OK) |
+| PalmRej 꺼짐 / 재부팅이 필요합니다 | PalmRej is off / Reboot needed |
+| PalmRej 끄기 / PalmRej 켜기 | Turn PalmRej off / Turn PalmRej on |
+| 진단 로그 기록 | Record diagnostic log (link at the bottom of the manager app) |
+| 기록 시작 / 멈추고 저장 | Start recording / Stop and save |
+| 저장 위치 / 위치 바꾸기 | Save location / Change location |
+
+### If something goes wrong
+
+- **Touch does not work:** turn the tablet off and on. If that does not help, reboot. If it still does not work, press PalmRej 끄기 (Turn PalmRej off) and reboot.
+- **The manager app shows 끄기가 덜 끝났습니다 / 재부팅하지 마세요** (turning off did not finish / do not reboot): do not reboot. Press PalmRej 끄기 again. Rebooting in that state can stop touch from working.
+- **After a big Windows update:** open the manager app once and check that it is green. If it is not, extract the zip again, run `PalmRej 설치.exe` and reboot.
+
+### Turn off or uninstall
+
+- **Turn off:** in the manager app, press PalmRej 끄기, then reboot. This turns off only the hand-edge filtering, not touch itself: touch keeps working through Wacom's default driver. Windows test mode is turned off too. To turn PalmRej back on, press PalmRej 켜기 and reboot. Turning off keeps the signing certificate; if you no longer need PalmRej, uninstall it, which also removes the certificate.
+- **Uninstall:** Settings > Apps (on Windows 10: Apps & features) > **PalmRej (Wacom 손날 인식)** > Uninstall. Click **Yes** when Windows asks for permission, **Yes** at 계속할까요? (Continue?), and **지금 재부팅** (Reboot now) at the end. This removes the drivers, the manager app, the shortcuts and the signing certificate. After the reboot, test mode is off and touch keeps working through Wacom's default driver.
+- **If an install stopped halfway,** PalmRej may be missing from Settings > Apps. Run the installer again to the end, then uninstall as above. The manual cleanup steps are in `읽어보세요.txt` (Korean), but do not clean up by hand if the install log contains the line 드라이버 패키지를 추가했습니다 (driver package added): the drivers are already in place, and turning test mode off would stop touch. Send the install log instead (see "Reporting problems").
+
+### Reporting problems
+
+Open a new issue on the [Issues](https://github.com/ghooost-0/PalmRej/issues) page (you need a GitHub account). **Issues are public**, so check again that your personal information is removed before you post. Sending logs is optional. Even if you send them, there is no promise of a version for other models.
+
+- **What to write:** your tablet model (e.g. Cintiq Pro 16, DTH-1620), your Windows version (Settings > System > About), and what you did and what happened.
+- **Install log:** `설치기록_<date>.txt` (설치기록 = "install log") in the extracted folder. You can also open it with **기록 파일 열기** (Open log file) in the installer. **It contains your PC name and Windows user name in several places:** the header lines at the top (on English Windows: Username, RunAs User, Machine, Host Application) and folder paths such as `C:\Users\<name>\...`. Your PC name comes after "Machine:", and your user name comes after the `\` in the "Username:" line. Open the file in Notepad, press Ctrl+H, and replace each name separately with a placeholder such as PC or USER, using Replace All. If the folder name after `C:\Users\` is not the same as your user name, replace it too. Save the file, then search for both names with Ctrl+F. Upload it only when neither name is found.
+- **Diagnostic log** (only if the install succeeded): in the manager app, click **진단 로그 기록** (Record diagnostic log) at the bottom, then **기록 시작** (Start recording). For 1-2 minutes, do what causes the problem (for example, resting your hand edge, or one- and two-finger taps and drags), then press **멈추고 저장** (Stop and save). The folder with the saved files opens automatically. Zip the two files, `… 진단 로그 <date>.log` (the log) and `… 요약.txt` (the summary): select both, right-click, and choose Send to > Compressed (zipped) folder. Attach the zip. The log grows by about 20 MB per minute, and zipping makes it about ten times smaller. GitHub does not accept a zip over 25 MB; if yours is bigger, record a shorter log. The log and summary usually do not contain your PC or user name, but if the summary has an "오류원문" (original error text) line, replace the folder paths in that line too.
+
+### Source code and license
+
+Starting with 1.1.0, PalmRej is released under the [MIT License](LICENSE) (`Copyright (c) 2026 ghooost-0`). The [소스](소스) ("source") folder contains the source code for the 1.1.0 release: the three drivers, the manager app, the installer window, and the scripts that install, uninstall, and turn PalmRej on and off. Anyone may use it for free, including for paid work such as illustration, and may modify, redistribute or sell it. If you redistribute it, even in part, include the copyright notice and the full license text. It is provided "as is", without warranty, and the maker is not responsible for any problems caused by using it.
+
+Releases 1.0.0 and 1.0.1 are not under the MIT License; they keep the terms they shipped with. A few Visual Studio / WDK template files are not covered by the MIT License (see the build guide).
+
+The build guide, [소스/빌드_안내.md](소스/빌드_안내.md), is in Korean, with a short English summary at the end. The maker's signing key is not published, so you must sign drivers you build yourself with your own test-signing certificate. They will load only in test-signing mode (with Secure Boot off).
+
+### Signing certificate
+
+The drivers are signed with a self-made test-signing certificate: `CN=PalmRej Test Signing`, thumbprint `02917AB8321CF79752BA799177759B81BA009C01`. The installer adds it to your PC's trusted certificates (for code signing only) so that the drivers install without warning prompts, and uninstalling removes it. The installer program itself is not signed.
+
+Wacom and Cintiq are trademarks of Wacom Co., Ltd.
